@@ -52,7 +52,7 @@ class _MyAppState extends State<MyApp> {
                 itemBuilder: (_, index) {
                   FolderVideos folder = folderVideos[index];
                   return ListTile(
-                    title: Text(folder.path),
+                    title: Text(folder.name),
                     subtitle:
                         Text(folder.videos.length.toString() + " video found"),
                   );

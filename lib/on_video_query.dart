@@ -20,7 +20,7 @@ class OnVideoQuery {
       if (videos != null) {
         return videos.entries.map((map) {
           return FolderVideos(
-              path: map.key,
+              name: map.key,
               videos: (map.value as List<dynamic>)
                   .map((e) => Video.fromMap(e as Map))
                   .toList(growable: false));
@@ -45,33 +45,33 @@ class PermissionException implements Exception {
 }
 
 class FolderVideos {
-  String path;
+  String name;
   List<Video> videos;
   FolderVideos({
-    required this.path,
+    required this.name,
     required this.videos,
   });
 
   FolderVideos copyWith({
-    String? path,
+    String? name,
     List<Video>? videos,
   }) {
     return FolderVideos(
-      path: path ?? this.path,
+      name: name ?? this.name,
       videos: videos ?? this.videos,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'path': path,
+      'name': name,
       'videos': videos.map((x) => x.toMap()).toList(),
     };
   }
 
   factory FolderVideos.fromMap(Map map) {
     return FolderVideos(
-      path: map['path'] ?? '',
+      name: map['name'] ?? '',
       videos: List<Video>.from(map['videos']?.map((x) => Video.fromMap(x))),
     );
   }
@@ -82,19 +82,19 @@ class FolderVideos {
       FolderVideos.fromMap(json.decode(source));
 
   @override
-  String toString() => 'Folder(path: $path, videos: $videos)';
+  String toString() => 'Folder(name: $name, videos: $videos)';
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
     return other is FolderVideos &&
-        other.path == path &&
+        other.name == name &&
         listEquals(other.videos, videos);
   }
 
   @override
-  int get hashCode => path.hashCode ^ videos.hashCode;
+  int get hashCode => name.hashCode ^ videos.hashCode;
 }
 
 class Video {
