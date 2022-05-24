@@ -9,8 +9,8 @@ import java.util.List;
 
 
 public class Utility {
-    public static HashMap<String,List<HashMap>> getAllVideos(Context context) {
-        HashMap<String, List<HashMap>> listHashMap=new HashMap<>();
+    public static HashMap<String,List<HashMap<String,Object>>> getAllVideos(Context context) {
+        HashMap<String, List<HashMap<String,Object>>> listHashMap=new HashMap<>();
 
         String[] projection = { MediaStore.Video.VideoColumns.DATA ,MediaStore.Video.Media.DISPLAY_NAME,MediaStore.Video.Media._ID,MediaStore.Video.Media.DURATION};
         Cursor cursor = context.getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, projection, null, null, null);
@@ -32,7 +32,7 @@ public class Utility {
                     listHashMap.get(foldername).add(videoModel.toMap());
                 }
                 else {
-                    ArrayList<HashMap> modelArrayList=new ArrayList<>();
+                    ArrayList<HashMap<String,Object>> modelArrayList=new ArrayList<>();
                     modelArrayList.add(videoModel.toMap());
                     listHashMap.put(foldername,modelArrayList);
                 }

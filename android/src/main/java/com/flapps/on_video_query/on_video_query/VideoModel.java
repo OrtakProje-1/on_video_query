@@ -19,7 +19,7 @@ public class VideoModel {
 
 
 
-    public HashMap toMap(){
+    public HashMap<String,Object> toMap(){
         HashMap map=new HashMap();
         map.put("path",path);
         map.put("id",id);

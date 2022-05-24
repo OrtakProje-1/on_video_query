@@ -16,15 +16,15 @@ class OnVideoQuery {
   static Future<List<FolderVideos>?> get getVideos async {
     PermissionStatus status = await Permission.storage.request();
     if (status.isGranted) {
-      final Map<String, List<Map<String, dynamic>>>? videos = await _channel
-          .invokeMethod<Map<String, List<Map<String, dynamic>>>>('getVideos');
+      final Map? videos = await _channel.invokeMethod<Map>('getVideos');
       if (videos != null) {
-        return videos.entries.map<FolderVideos>((map) {
+        return videos.entries.map((map) {
           return FolderVideos(
-            path: map.key,
-            videos: map.value.map((e) => Video.fromMap(e)).toList(),
-          );
-        }).toList();
+              path: map.key,
+              videos: (map.value as List<dynamic>)
+                  .map((e) => Video.fromMap(e as Map))
+                  .toList(growable: false));
+        }).toList(growable: false);
       } else {
         return [];
       }
@@ -69,7 +69,7 @@ class FolderVideos {
     };
   }
 
-  factory FolderVideos.fromMap(Map<String, dynamic> map) {
+  factory FolderVideos.fromMap(Map map) {
     return FolderVideos(
       path: map['path'] ?? '',
       videos: List<Video>.from(map['videos']?.map((x) => Video.fromMap(x))),
@@ -112,14 +112,14 @@ class Video {
   });
 
   Video copyWith({
-    String? url,
-    int? mediaid,
+    String? path,
+    int? id,
     String? name,
     int? duration,
   }) {
     return Video(
-      path: url ?? this.path,
-      id: mediaid ?? this.id,
+      path: path ?? this.path,
+      id: id ?? this.id,
       name: name ?? this.name,
       duration: duration ?? this.duration,
     );
@@ -127,17 +127,17 @@ class Video {
 
   Map<String, dynamic> toMap() {
     return {
-      'url': path,
-      'mediaid': id,
+      'path': path,
+      'id': id,
       'name': name,
       'duration': duration,
     };
   }
 
-  factory Video.fromMap(Map<String, dynamic> map) {
+  factory Video.fromMap(Map map) {
     return Video(
-      path: map['url'] ?? '',
-      id: map['mediaid']?.toInt() ?? 0,
+      path: map['path'] ?? '',
+      id: map['id']?.toInt() ?? 0,
       name: map['name'] ?? '',
       duration: map['duration']?.toInt() ?? 0,
     );
@@ -149,7 +149,7 @@ class Video {
 
   @override
   String toString() {
-    return 'Video(url: $path, mediaid: $id, name: $name, duration: $duration)';
+    return 'Video(path: $path, id: $id, name: $name, duration: $duration)';
   }
 
   @override
